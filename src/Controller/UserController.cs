@@ -10,35 +10,63 @@ public class UserController(IUserService userService) : ControllerBase
 {
     [HttpPost]
     [Route("/create")]
-    public async Task<UserDto> Create(
+    public async Task<ActionResult<UserDto>> Create(
         [FromBody] CreationUser creationUser
     )
     {
-        userService.Create(creationUser);
+        var user = await userService.Create(creationUser);
+        if (user == null)
+        {
+            return BadRequest("This email already exists");
+        }
+
+        return Ok(user);
     }
 
     [HttpGet]
     [Route("/find/{id}")]
-    public async Task<UserDto> Find(
-        string id)
+    public async Task<ActionResult<UserDto>> Find(
+        string uuid)
     {
+
+        var user = await userService.Find(uuid);
+        if (user == null)
+        {
+            return BadRequest("user not found");
+        }
+
+        return Ok(userService);
     }
 
     [HttpPut]
     [Route("/edit/{id}")]
-    public async Task<UserDto> Edit(
-        string id,
+    public async Task<ActionResult<UserDto>> Edit(
+        string uuid,
         [FromBody] EditUser editUser
     )
-        
     {
+        var user = await userService.Edit(uuid, editUser);
+        if (user == null)
+        {
+            return BadRequest("user not found");
+        }
+
+        return Ok(user);
     }
 
     [HttpDelete]
     [Route("/delete/{id}")]
-    public async Task<UserDto> Delete(
+    public async Task<ActionResult<UserDto>> Delete(
         string uuid
     )
     {
+        var userDeleted = await userService.Delete(uuid);
+        if (userDeleted == null)
+        {
+            return BadRequest("The uuid not exists");
+        }
+
+        return Ok(userDeleted);
     }
+    
 }

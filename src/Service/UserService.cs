@@ -9,15 +9,20 @@ public class UserService(UserRepository userRepository,
     UserMapper userMapper) : IUserService
 {
     
-    public async Task<UserDto> Create(CreationUser creationUser)
+    public async Task<UserDto?> Create(CreationUser creationUser)
     {
         var user = userMapper.ToUser(creationUser);
-        await userRepository.StoreAsync(user);
 
+        if (await userRepository.ExistsAccountByEmail(creationUser.Email))
+        {
+            return null;
+        }
+        
+        await userRepository.StoreAsync(user);
         return userMapper.ToUserDto(user);
     }
 
-    public async Task<UserDto> Find(string uuid)
+    public async Task<UserDto?> Find(string uuid)
     {
         var user = await userRepository.FindByUuid(uuid);
         if (user == null)
@@ -28,7 +33,7 @@ public class UserService(UserRepository userRepository,
         return userMapper.ToUserDto(user);
     }
 
-    public async Task<UserDto> Delete(string uuid)
+    public async Task<UserDto?> Delete(string uuid)
     {
         var user = await userRepository.DeleteAsync(uuid);
         if (user == null)
@@ -39,7 +44,7 @@ public class UserService(UserRepository userRepository,
         return userMapper.ToUserDto(user);
     }
 
-    public async Task<UserDto> Edit(string uuid,
+    public async Task<UserDto?> Edit(string uuid,
         EditUser editUser)
     {
 
