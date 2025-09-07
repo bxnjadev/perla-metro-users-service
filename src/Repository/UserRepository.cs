@@ -5,11 +5,10 @@ using perla_metro_users_service.Model;
 namespace perla_metro_users_service.Repository;
 
 public class UserRepository(
-        ApplicationDbContext dbContext) : IUserRepository<User>
+    ApplicationDbContext dbContext) : IUserRepository
 {
-
     private readonly DbSet<User> _users = dbContext.Users;
-    
+
     public async Task<User> StoreAsync(User obj)
     {
         await _users.AddAsync(obj);
@@ -25,7 +24,8 @@ public class UserRepository(
             return null;
         }
 
-        _users.Remove(user);
+        user.IsActive = false;
+        await dbContext.SaveChangesAsync();
         return user;
     }
 
@@ -63,5 +63,27 @@ public class UserRepository(
         return await _users.ToListAsync();
     }
 
-    
+    public async Task<ICollection<User>> Search(string? name,
+        string? email,
+        bool? searchByIsDesactive)
+    {
+
+        IQueryable<User> searched = dbContext.Users;
+        
+        if (email != null)
+        {
+            searched = searched.Where(u => u.Email == email);
+        }
+
+        if (searchByIsDesactive != null)
+        {
+            searched = searched.Where(u => !u.IsActive);
+        }
+        else
+        {
+            searched = searched.Where(u => u.IsActive);
+        }
+
+        return await searched.ToListAsync();
+    }
 }

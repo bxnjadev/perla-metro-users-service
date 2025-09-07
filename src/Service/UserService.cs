@@ -63,5 +63,11 @@ public class UserService(UserRepository userRepository,
 
         return userMapper.ToUserDto(user);
     }
+
+    public Task<ICollection<UserDto>> Search(string? name, string? email, bool? searchByIsDesactive)
+    {
+        
+    }
     
 }
+

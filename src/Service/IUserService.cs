@@ -12,5 +12,9 @@ public interface IUserService
     Task<UserDto?> Delete(string uuid);
 
     Task<UserDto?> Edit(string uuid, EditUser editUser);
-    
+
+    Task<ICollection<UserDto>> Search(string? name,
+        string? email,
+        bool? searchByIsDesactive);
+
 }

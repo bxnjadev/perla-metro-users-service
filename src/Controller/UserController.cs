@@ -28,7 +28,6 @@ public class UserController(IUserService userService) : ControllerBase
     public async Task<ActionResult<UserDto>> Find(
         string uuid)
     {
-
         var user = await userService.Find(uuid);
         if (user == null)
         {
@@ -67,6 +66,18 @@ public class UserController(IUserService userService) : ControllerBase
         }
 
         return Ok(userDeleted);
+    }
+
+    [HttpGet]
+    [Route("/search/")]
+    public async Task<ActionResult<List<UserDto>>> Search(
+        [FromQuery] string? name,
+        [FromQuery] string? email, 
+        [FromQuery] bool? searchByIsActive,
+        [FromQuery] bool? searchByIsDesactive
+    )
+    {
+            
     }
     
 }
