@@ -1,8 +1,9 @@
-﻿namespace perla_metro_users_service.Model;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace perla_metro_users_service.Model;
 
 public class User
 {
-    
     public Guid Id { get; set; }
 
     public string Names { get; set; }
