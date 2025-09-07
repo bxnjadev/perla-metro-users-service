@@ -7,7 +7,7 @@ public class CreationUser
     
     [Required(ErrorMessage = "El nombre es obligatorio.")]
     [StringLength(100, ErrorMessage = "El nombre no puede exceder los 100 caracteres.")]
-    public string Names { get; set; }
+    public string Name { get; set; }
 
     [Required(ErrorMessage = "El apellido es obligatorio.")]
     [StringLength(100, ErrorMessage = "El apellido no puede exceder los 100 caracteres.")]

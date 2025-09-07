@@ -5,7 +5,7 @@ using perla_metro_users_service.Model;
 namespace perla_metro_users_service.Repository;
 
 public class UserRepository(
-        ApplicationDbContext dbContext) : IObjectRepository<User>
+        ApplicationDbContext dbContext) : IUserRepository<User>
 {
 
     private readonly DbSet<User> _users = dbContext.Users;
@@ -29,6 +29,13 @@ public class UserRepository(
         return user;
     }
 
+    public async Task<bool> ExistsAccountByEmail(string email)
+    {
+        var user = await _users.Where(u => u.Email == email)
+            .FirstOrDefaultAsync();
+        return user == null;
+    }
+
     public Task<User?> FindByUuid(string uuid)
     {
         var realUuid = Guid.Parse(uuid);
@@ -45,7 +52,7 @@ public class UserRepository(
 
         user.Email = obj.Email;
         user.LastNames = obj.LastNames;
-        user.Names = obj.Names;
+        user.Name = obj.Name;
         user.Password = obj.Password;
         await dbContext.SaveChangesAsync();
         return user;
