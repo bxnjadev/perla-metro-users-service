@@ -1,0 +1,6 @@
+@perla_metro_users_service_HostAddress = http://localhost:5255
+
+GET {{perla_metro_users_service_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
