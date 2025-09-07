@@ -16,5 +16,13 @@ public class ApplicationDbContext : DbContext
     {
         optionsBuilder.UseNpgsql("");
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<User>()
+            .Property(u => u.Id)
+            .HasDefaultValueSql("gen_random_uuid()");
+    }
     
 }
