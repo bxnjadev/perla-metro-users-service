@@ -5,8 +5,8 @@ using perla_metro_users_service.Repository;
 
 namespace perla_metro_users_service.service;
 
-public class UserService(UserRepository userRepository,
-    UserMapper userMapper) : IUserService
+public class UserService(IUserRepository userRepository,
+    IUserMapper userMapper) : IUserService
 {
     
     public async Task<UserDto?> Create(CreationUser creationUser)
@@ -64,9 +64,19 @@ public class UserService(UserRepository userRepository,
         return userMapper.ToUserDto(user);
     }
 
-    public Task<ICollection<UserDto>> Search(string? name, string? email, bool? searchByIsDesactive)
+    public async Task<ICollection<UserDto>> Search(string? name, string? email, bool? searchByIsDesactive)
     {
-        
+        var usersSearched = await userRepository.Search(name,
+            email,
+            searchByIsDesactive);
+
+        var usersDto = new List<UserDto>();
+        foreach (var user in usersSearched)
+        {
+            usersDto.Add(userMapper.ToUserDto(user));
+        }
+
+        return usersDto;
     }
     
 }

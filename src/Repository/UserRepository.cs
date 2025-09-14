@@ -33,7 +33,7 @@ public class UserRepository(
     {
         var user = await _users.Where(u => u.Email == email)
             .FirstOrDefaultAsync();
-        return user == null;
+        return user != null;
     }
 
     public Task<User?> FindByUuid(string uuid)

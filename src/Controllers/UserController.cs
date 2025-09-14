@@ -2,14 +2,14 @@
 using perla_metro_users_service.Dto;
 using perla_metro_users_service.service;
 
-namespace perla_metro_users_service.Controller;
+namespace perla_metro_users_service.Controllers;
 
 [ApiController]
-[Route("/api/users")]
+[Route("api/[controller]")]
 public class UserController(IUserService userService) : ControllerBase
 {
     [HttpPost]
-    [Route("/create")]
+    [Route("/api/users/create")]
     public async Task<ActionResult<UserDto>> Create(
         [FromBody] CreationUser creationUser
     )
@@ -24,10 +24,11 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [HttpGet]
-    [Route("/find/{id}")]
+    [Route("/api/users/find/{uuid}")]
     public async Task<ActionResult<UserDto>> Find(
         string uuid)
     {
+        Console.WriteLine("find");
         var user = await userService.Find(uuid);
         if (user == null)
         {
@@ -38,7 +39,7 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [HttpPut]
-    [Route("/edit/{id}")]
+    [Route("/api/users/edit/{id}")]
     public async Task<ActionResult<UserDto>> Edit(
         string uuid,
         [FromBody] EditUser editUser
@@ -54,7 +55,7 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [HttpDelete]
-    [Route("/delete/{id}")]
+    [Route("/api/users/delete/{id}")]
     public async Task<ActionResult<UserDto>> Delete(
         string uuid
     )
@@ -69,15 +70,18 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [HttpGet]
-    [Route("/search/")]
+    [Route("/api/users/search")]
     public async Task<ActionResult<List<UserDto>>> Search(
         [FromQuery] string? name,
         [FromQuery] string? email, 
-        [FromQuery] bool? searchByIsActive,
-        [FromQuery] bool? searchByIsDesactive
+        [FromQuery] bool? searchByIsActive
     )
     {
-            
+        return Ok(
+            await userService.Search(name,
+                email,
+                searchByIsActive)
+        );
     }
     
 }

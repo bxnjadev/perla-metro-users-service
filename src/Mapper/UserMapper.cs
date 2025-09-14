@@ -4,7 +4,7 @@ using perla_metro_users_service.Util;
 
 namespace perla_metro_users_service.Mapper;
 
-public class UserMapper(IEncryptStrategy encryptStrategy)
+public class UserMapper(IEncryptStrategy encryptStrategy) : IUserMapper
 {
     
     public User ToUser(CreationUser creationUser)
