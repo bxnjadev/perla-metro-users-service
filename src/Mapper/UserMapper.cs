@@ -25,6 +25,8 @@ public class UserMapper(IEncryptStrategy encryptStrategy) : IUserMapper
 
     public UserDto ToUserDto(User user)
     {
+        
+        Console.WriteLine(user.Name);
         return new UserDto
         {
             Uuid = user.Id.ToString(),

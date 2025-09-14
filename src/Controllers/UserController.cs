@@ -28,14 +28,13 @@ public class UserController(IUserService userService) : ControllerBase
     public async Task<ActionResult<UserDto>> Find(
         string uuid)
     {
-        Console.WriteLine("find");
         var user = await userService.Find(uuid);
         if (user == null)
         {
-            return BadRequest("user not found");
+            return BadRequest("User not found");
         }
 
-        return Ok(userService);
+        return Ok(user);
     }
 
     [HttpPut]
