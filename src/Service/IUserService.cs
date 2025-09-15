@@ -13,6 +13,9 @@ public interface IUserService
 
     Task<UserDto?> Edit(string uuid, EditUser editUser);
 
+    Task<UserDto?> EditPassword(string uuid, string password,
+        string repeatPassword);
+
     Task<ICollection<UserDto>> Search(string? name,
         string? email,
         bool? searchByIsDesactive);

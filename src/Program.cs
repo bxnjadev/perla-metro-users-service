@@ -28,8 +28,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
-
-
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using perla_metro_users_service.Dto;
+using perla_metro_users_service.Exception;
 using perla_metro_users_service.service;
 
 namespace perla_metro_users_service.Controllers;
@@ -38,7 +39,7 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [HttpPut]
-    [Route("/api/users/edit/{id}")]
+    [Route("/api/users/edit/{uuid}")]
     public async Task<ActionResult<UserDto>> Edit(
         string uuid,
         [FromBody] EditUser editUser
@@ -53,8 +54,32 @@ public class UserController(IUserService userService) : ControllerBase
         return Ok(user);
     }
 
+    [HttpPatch]
+    [Route("/api/users/{uuid}/password")]
+    public async Task<ActionResult<UserDto>> UpdatePassword(
+        string uuid,
+        [FromBody] EditPassword editPassword)
+    {
+        try
+        {
+            return Ok(await userService.EditPassword(uuid,
+                editPassword.Password,
+                editPassword.RepeatPassword
+            ));
+        }
+        catch (NotEqualsPasswordException)
+        {
+            return BadRequest("The password not equals");
+        }
+        catch (ObjectNotFound)
+        {
+            return NotFound("The user not found");
+        }
+    } 
+
+    
     [HttpDelete]
-    [Route("/api/users/delete/{id}")]
+    [Route("/api/users/delete/{uuid}")]
     public async Task<ActionResult<UserDto>> Delete(
         string uuid
     )
@@ -62,7 +87,7 @@ public class UserController(IUserService userService) : ControllerBase
         var userDeleted = await userService.Delete(uuid);
         if (userDeleted == null)
         {
-            return BadRequest("The uuid not exists");
+            return BadRequest("The user not exists");
         }
 
         return Ok(userDeleted);
