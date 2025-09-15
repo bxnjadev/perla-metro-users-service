@@ -24,4 +24,4 @@ EXPOSE $PORT
 ENV ASPNETCORE_URLS=http://+:$PORT
 
 # Punto de entrada (cambia "TuAplicacion.dll" por tu archivo)
-CMD ["dotnet", "perla_metro_users_service.dll"]
+CMD ["dotnet run"]
