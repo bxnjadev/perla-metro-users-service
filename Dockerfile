@@ -18,4 +18,4 @@ ENV ASPNETCORE_URLS=http://+:8080
 
 COPY --from=build /out .
 
-ENTRYPOINT ["dotnet", "perla-metro-stations-users.dll"]
+ENTRYPOINT ["dotnet", "perla-metro-users-service.dll"]
