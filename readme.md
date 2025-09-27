@@ -30,7 +30,7 @@ Asegúrate de tener instalado:
 
 Clonar el repositorio utilizando git
 ```bash
-  git clone https://github.com/FernandoChav/taller-webapi  
+  git clone https://github.com/bxnjadev/perla-metro-users-service
 ```
 ### 2️⃣ Ir a la carpeta que contiene el proyecto
 ```bash
