@@ -8,6 +8,12 @@ using perla_metro_users_service.service;
 
 namespace perla_metro_users_service.Controllers;
 
+/// <summary>
+/// Controller that contains the all http method users
+/// </summary>
+/// <param name="userService">The user service for handle users</param>
+/// <param name="authenticatorHandler">The authentication handler for manage the authentication</param>
+
 [ApiController]
 [Route("api/[controller]")]
 public class UserController(
@@ -15,6 +21,12 @@ public class UserController(
     IAuthenticatorHandler authenticatorHandler
 ) : ControllerBase
 {
+    
+    /// <summary>
+    /// Authenticate with the system
+    /// </summary>
+    /// <param name="credentials">A group credentials for access</param>
+    /// <returns>A JWT with the date of users</returns>
     
     [HttpPost]
     [Route("/api/auth/")]
@@ -46,6 +58,12 @@ public class UserController(
         
     }
 
+    /// <summary>
+    /// Create a new users 
+    /// </summary>
+    /// <param name="creationUser">The request user</param>
+    /// <returns>The user created with her UUID V4</returns>
+    
     [HttpPost]
     [Route("/api/users/create")]
     public async Task<ActionResult<UserDto>> Create(
@@ -60,6 +78,12 @@ public class UserController(
 
         return Ok(user);
     }
+    
+    /// <summary>
+    /// Find a user by her UUID V4
+    /// </summary>
+    /// <param name="uuid">The UUID V4 for find</param>
+    /// <returns>The user founded</returns>
 
     [HttpGet]
     [Route("/api/users/find/{uuid}")]
@@ -74,6 +98,13 @@ public class UserController(
 
         return Ok(user);
     }
+    
+    /// <summary>
+    /// Edit a user by group of parameters
+    /// </summary>
+    /// <param name="uuid">The UUID user for usted</param>
+    /// <param name="editUser">A group of parameters for edit</param>
+    /// <returns></returns>
 
     [HttpPut]
     [Route("/api/users/edit/{uuid}")]
@@ -91,30 +122,13 @@ public class UserController(
         return Ok(user);
     }
 
-    [HttpPatch]
-    [Route("/api/users/{uuid}/password")]
-    public async Task<ActionResult<UserDto>> UpdatePassword(
-        string uuid,
-        [FromBody] EditPassword editPassword)
-    {
-        try
-        {
-            return Ok(await userService.EditPassword(uuid,
-                editPassword.Password,
-                editPassword.RepeatPassword
-            ));
-        }
-        catch (NotEqualsPasswordException)
-        {
-            return BadRequest("The password not equals");
-        }
-        catch (ObjectNotFound)
-        {
-            return NotFound("The user not found");
-        }
-    }
 
-
+    /// <summary>
+    /// Delete a user from UUID V4
+    /// </summary>
+    /// <param name="uuid">The UUID V4 for delete</param>
+    /// <returns>The user deleted</returns>
+    
     [HttpDelete]
     [Route("/api/users/delete/{uuid}")]
     public async Task<ActionResult<UserDto>> Delete(
@@ -129,6 +143,14 @@ public class UserController(
 
         return Ok(userDeleted);
     }
+    
+    /// <summary>
+    /// Search a user from a group filters
+    /// </summary>
+    /// <param name="name">The username</param>
+    /// <param name="email">The email</param>
+    /// <param name="searchByIsActive">A flag that is true only will search users active</param>
+    /// <returns></returns>
 
     [HttpGet]
     [Route("/api/users/search")]
