@@ -5,6 +5,12 @@ namespace perla_metro_users_service.service;
 public interface IUserService
 {
 
+    /// <summary>
+    /// Create a new 
+    /// </summary>
+    /// <param name="creationUser"></param>
+    /// <returns></returns>
+    
     Task<UserDto?> Create(CreationUser creationUser);
 
     Task<UserDto?> Find(string uuid);

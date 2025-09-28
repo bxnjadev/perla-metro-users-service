@@ -56,7 +56,8 @@ public class UserService(IUserRepository userRepository,
             {
                 Name = editUser.Name,
                 LastNames = editUser.LastNames,
-                Email = editUser.Email
+                Email = editUser.Email,
+                Password = encryptStrategy.Encrypt(editUser.Password)
             });
         
         if (user == null)
