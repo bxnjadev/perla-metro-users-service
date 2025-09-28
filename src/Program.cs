@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using perla_metro_users_service.Authentication;
+using perla_metro_users_service.Authentication.Token;
 using perla_metro_users_service.Data;
 using perla_metro_users_service.Mapper;
 using perla_metro_users_service.Model;
@@ -23,6 +25,8 @@ builder
 builder.Services.AddScoped<IEncryptStrategy, BcryptEncryptStrategy>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserTokenProvider, JwtUserTokenProvider>();
+builder.Services.AddScoped<IAuthenticatorHandler, AuthenticationHandler>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 

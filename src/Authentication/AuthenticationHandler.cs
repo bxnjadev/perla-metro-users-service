@@ -5,7 +5,7 @@ using perla_metro_users_service.Util;
 
 namespace perla_metro_users_service.Authentication;
 
-public class AuthenticationHandler(UserRepository userRepository,
+public class AuthenticationHandler(IUserRepository userRepository,
     IEncryptStrategy encryptStrategy,
     IUserTokenProvider userTokenProvider) : IAuthenticatorHandler
 {

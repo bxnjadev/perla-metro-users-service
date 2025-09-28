@@ -31,9 +31,11 @@ public class JwtUserTokenProvider: IUserTokenProvider
 
         var claims = new List<Claim>
         {
+       
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, roleName)
+            new Claim(ClaimTypes.Role, roleName),
+            new Claim("Id", user.Id.ToString())
         };
 
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSecret));
