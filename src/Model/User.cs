@@ -17,5 +17,7 @@ public class User
     public bool IsActive { get; set; } = true;
 
     public string Password { get; set; }
-    
+
+    public int Rol { get; set; } = 0;
+
 }

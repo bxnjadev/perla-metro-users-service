@@ -11,6 +11,8 @@ public interface IUserRepository
 
     Task<bool> ExistsAccountByEmail(string email);
 
+    Task<User?> FindByEmail(string email);
+
     Task<User?> FindByUuid(string uuid);
 
     Task<User?> Update(string uuid, User obj);

@@ -1,14 +1,51 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using perla_metro_users_service.Authentication;
+using perla_metro_users_service.Authentication.Token;
 using perla_metro_users_service.Dto;
 using perla_metro_users_service.Exception;
+using perla_metro_users_service.Model;
 using perla_metro_users_service.service;
 
 namespace perla_metro_users_service.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController(IUserService userService) : ControllerBase
+public class UserController(
+    IUserService userService,
+    IAuthenticatorHandler authenticatorHandler
+) : ControllerBase
 {
+    
+    [HttpPost]
+    [Route("/api/auth/")]
+    public async Task<ActionResult<string>> Login(
+        [FromBody] Credentials credentials
+    )
+    {
+        try
+        {
+            var token = await authenticatorHandler.Authenticate(
+                credentials.Email,
+                credentials.Password
+            );
+
+            return Ok(token);
+        }
+        catch (ObjectNotFound objectNotFound)
+        {
+            return BadRequest("Usuario no encontrado");
+        }
+        catch (UserInactiveException userInactiveException)
+        {
+            return BadRequest("Usuario esta inactivo");
+        }
+        catch (PasswordIncorrectException passwordIncorrectException)
+        {
+            return Unauthorized("Clave incorrecta");
+        }
+        
+    }
+
     [HttpPost]
     [Route("/api/users/create")]
     public async Task<ActionResult<UserDto>> Create(
@@ -75,9 +112,9 @@ public class UserController(IUserService userService) : ControllerBase
         {
             return NotFound("The user not found");
         }
-    } 
+    }
 
-    
+
     [HttpDelete]
     [Route("/api/users/delete/{uuid}")]
     public async Task<ActionResult<UserDto>> Delete(
@@ -97,7 +134,7 @@ public class UserController(IUserService userService) : ControllerBase
     [Route("/api/users/search")]
     public async Task<ActionResult<List<UserDto>>> Search(
         [FromQuery] string? name,
-        [FromQuery] string? email, 
+        [FromQuery] string? email,
         [FromQuery] bool? searchByIsActive
     )
     {
