@@ -37,6 +37,8 @@ public class JwtUserTokenProvider: IUserTokenProvider
             new Claim(ClaimTypes.Role, roleName),
             new Claim("Id", user.Id.ToString())
         };
+        
+        Console.WriteLine(_jwtSecret);
 
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSecret));
         DateTime? expiration = DateTime.UtcNow.AddHours(1);
