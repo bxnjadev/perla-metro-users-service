@@ -15,7 +15,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 var connectionString = builder.Configuration["ConnectionStrings"];
+var secret = builder.Configuration["Secret"];
 Console.WriteLine(connectionString);
+Console.WriteLine(secret);
 
 builder
     .Services

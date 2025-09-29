@@ -50,7 +50,7 @@ public class JwtUserTokenProvider: IUserTokenProvider
         );
 
         var token = new JwtSecurityToken(
-            issuer: _validIssuer,      // Agregar issuer
+            issuer: _validIssuer,  
             audience: _validAudience,
             claims: claims,
             expires: expiration,
