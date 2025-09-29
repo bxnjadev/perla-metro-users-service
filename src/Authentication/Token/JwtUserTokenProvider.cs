@@ -17,9 +17,11 @@ public class JwtUserTokenProvider: IUserTokenProvider
     
     public JwtUserTokenProvider(IConfiguration configuration)
     {
-        _jwtSecret = configuration["JWT:Secret"];
-        _validIssuer = configuration["JWT:ValidIssuer"];
-        _validAudience = configuration["JWT:ValidAudience"];
+        _jwtSecret = configuration["Secret"];
+        _validIssuer = configuration["Issuer"];
+        _validAudience = configuration["Audience"];
+        
+        Console.WriteLine(_jwtSecret);
         _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     }
 

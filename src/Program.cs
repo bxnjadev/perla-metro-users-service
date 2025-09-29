@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-var connectionString = builder.Configuration["ConnectionStrings:default"];
+var connectionString = builder.Configuration["ConnectionStrings"];
 Console.WriteLine(connectionString);
 
 builder
