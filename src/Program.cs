@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using perla_metro_users_service.Authentication;
 using perla_metro_users_service.Authentication.Token;
 using perla_metro_users_service.Data;
+using perla_metro_users_service.Data.Seeder;
 using perla_metro_users_service.Mapper;
 using perla_metro_users_service.Model;
 using perla_metro_users_service.Repository;
@@ -13,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+var configuration = new ConfigurationBuilder().AddEnvironmentVariables();
 
 var connectionString = builder.Configuration["ConnectionStrings"];
 var secret = builder.Configuration["Secret"];
@@ -46,8 +49,12 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     try
     {
-        var dbContext = services.GetRequiredService<ApplicationDbContext>(); 
+        var dbContext = services.GetRequiredService<ApplicationDbContext>();
+        var encryptStrategy = services.GetRequiredService<IEncryptStrategy>();
+        
         await dbContext.Database.MigrateAsync();
+        SeedData.Initialize(dbContext, encryptStrategy);
+        
     }
     catch (Exception ex)
     {
