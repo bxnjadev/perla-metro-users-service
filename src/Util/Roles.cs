@@ -9,7 +9,7 @@ public class Roles
     {
         if (type == 1)
         {
-            return "Administrator";
+            return "Admin";
         }
 
         return "User";

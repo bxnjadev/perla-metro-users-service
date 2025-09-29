@@ -16,8 +16,13 @@ builder.Services.AddControllers();
 
 var connectionString = builder.Configuration["ConnectionStrings"];
 var secret = builder.Configuration["Secret"];
+var audience = builder.Configuration["Audience"];
+var issuer = builder.Configuration["Issuer"];
+
 Console.WriteLine(connectionString);
 Console.WriteLine(secret);
+Console.WriteLine(audience);
+Console.WriteLine(issuer);
 
 builder
     .Services
