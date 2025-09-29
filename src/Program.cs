@@ -19,6 +19,7 @@ var secret = builder.Configuration["Secret"];
 var audience = builder.Configuration["Audience"];
 var issuer = builder.Configuration["Issuer"];
 
+Console.WriteLine("--------------- VARIABLES -----------");
 Console.WriteLine(connectionString);
 Console.WriteLine(secret);
 Console.WriteLine(audience);
