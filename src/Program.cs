@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using perla_metro_users_service.Authentication;
+using perla_metro_users_service.Authentication.Token;
 using perla_metro_users_service.Data;
+using perla_metro_users_service.Data.Seeder;
 using perla_metro_users_service.Mapper;
 using perla_metro_users_service.Model;
 using perla_metro_users_service.Repository;
@@ -8,11 +11,22 @@ using perla_metro_users_service.Util;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-var connectionString = builder.Configuration["ConnectionStrings:default"];
+var configuration = new ConfigurationBuilder().AddEnvironmentVariables();
+
+var connectionString = builder.Configuration["ConnectionStrings"];
+var secret = builder.Configuration["Secret"];
+var audience = builder.Configuration["Audience"];
+var issuer = builder.Configuration["Issuer"];
+
+Console.WriteLine("--------------- VARIABLES -----------");
 Console.WriteLine(connectionString);
+Console.WriteLine(secret);
+Console.WriteLine(audience);
+Console.WriteLine(issuer);
 
 builder
     .Services
@@ -22,15 +36,38 @@ builder
 builder.Services.AddScoped<IEncryptStrategy, BcryptEncryptStrategy>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserTokenProvider, JwtUserTokenProvider>();
+builder.Services.AddScoped<IAuthenticatorHandler, AuthenticationHandler>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbContext = services.GetRequiredService<ApplicationDbContext>();
+        var encryptStrategy = services.GetRequiredService<IEncryptStrategy>();
+        
+        await dbContext.Database.MigrateAsync();
+        SeedData.Initialize(dbContext, encryptStrategy);
+        
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error al aplicar las migraciones de la base de datos.");
+        throw;
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
   
 app.UseHttpsRedirection();

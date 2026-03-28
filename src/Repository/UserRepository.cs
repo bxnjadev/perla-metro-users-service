@@ -31,9 +31,14 @@ public class UserRepository(
 
     public async Task<bool> ExistsAccountByEmail(string email)
     {
+        return await FindByEmail(email) != null;
+    }
+
+    public async Task<User?> FindByEmail(string email)
+    {
         var user = await _users.Where(u => u.Email == email)
             .FirstOrDefaultAsync();
-        return user != null;
+        return user;
     }
 
     public Task<User?> FindByUuid(string uuid)

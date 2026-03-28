@@ -21,7 +21,8 @@ namespace perla_metro_users_service.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     Date = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false)
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    Rol = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,27 +1,26 @@
-﻿# Dockerfile para despliegue en plataformas cloud con .NET 9
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /app
+﻿# --- Etapa de Compilación (Build Stage) ---
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /source
 
-# Copiar archivos de proyecto y restaurar dependencias
+# Copia solo el archivo .csproj para restaurar las dependencias primero.
+# Esto aprovecha el caché de Docker si no cambian los paquetes.
 COPY *.csproj .
 RUN dotnet restore
 
-# Copiar el código fuente
+# Copia el resto del código fuente del proyecto.
 COPY . .
 
-# Publicar la aplicación
-RUN dotnet publish -c Release -o out
+# Publica la aplicación.
+RUN dotnet publish -c Release -o /app/out --no-restore
 
-# Imagen de runtime
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+# --- Etapa Final (Runtime Stage) ---
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-
-# Copiar archivos compilados
 COPY --from=build /app/out .
 
-# El puerto será asignado por la plataforma de despliegue
-EXPOSE $PORT
-ENV ASPNETCORE_URLS=http://+:$PORT
+# Expone el puerto 80 y configura Kestrel para escuchar en él.
+EXPOSE 80
+ENV ASPNETCORE_URLS=http://+:80
 
-# Punto de entrada (cambia "TuAplicacion.dll" por tu archivo)
-CMD ["dotnet run"]
+# Punto de entrada correcto.
+ENTRYPOINT ["dotnet", "perla-metro-users-service.dll"]

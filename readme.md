@@ -15,6 +15,20 @@ El proyecto utiliza las siguientes tecnologías y herramientas:
 - **.NET 8**: Framework para construir la webapi.
 - **Postgres**: Base de datos para almacenar los usuarios.
 
+## Patrones de Diseño
+En la implementación del proyecto se aplicaron diferentes **patrones de diseño** para garantizar la separación de responsabilidades, la reutilización de componentes y la mantenibilidad del sistema.
+
+### DAO (Data Access Object)
+El patrón **DAO** permite abstraer y encapsular el acceso a la base de datos, evitando que la lógica de negocio interactúe directamente con las consultas SQL o con la tecnología de persistencia.
+
+### DTO (Data Transfer Object)
+El patrón **DTO** se emplea para transportar datos entre las capas de la aplicación sin exponer directamente las entidades del dominio.
+
+### Repository
+El patrón **Repository** actúa como un intermediario entre la lógica de negocio y la capa de persistencia, simulando una colección en memoria que abstrae las operaciones sobre la base de datos.
+
+## 
+
 ## ⚙️ Requisitos Previos
 
 Asegúrate de tener instalado:
@@ -30,7 +44,7 @@ Asegúrate de tener instalado:
 
 Clonar el repositorio utilizando git
 ```bash
-  git clone https://github.com/FernandoChav/taller-webapi  
+  git clone https://github.com/bxnjadev/perla-metro-users-service
 ```
 ### 2️⃣ Ir a la carpeta que contiene el proyecto
 ```bash
